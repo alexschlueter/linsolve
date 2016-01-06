@@ -94,9 +94,10 @@ def main():
     s = []
     t = []
     q = []
-    txt = ax.text(0.05, 0.95, "", transform=ax.transAxes, ha="left", va="top", family="monospace")
-    ax.set_ylabel("Zeit")
-    ax.set_xlabel("Dimensionen")
+    txt = ax.text(0.05, 0.7, "", transform=ax.transAxes, ha="left", va="top", family="monospace")
+    ax.set_ylabel("Time")
+    ax.set_xlabel("Dimensions")
+    ax.legend(["Richardson", "Cholesky", "ConjGrad"], loc=2)
     def update(data):
         s.append(data[0])
         t.append(data[1])
@@ -107,11 +108,13 @@ def main():
         Lnchol.set_ydata(t)
         Lncon.set_xdata(range(1, STEP * len(q), STEP))
         Lncon.set_ydata(q)
-        txt.set_text("Abs. Fehler:\nRichardson: " + str(data[3])
-                     + "\nCholesky:   " + str(data[4]) + "\nConjGrad:   " + str(data[5]))
+        txt.set_text("Last Time (" + str(STEP * len(s)) + " Dims):\nRichardson: " + str(data[0])
+                     + "\nCholesky:   " + str(data[1]) + "\nConjGrad:   " + str(data[2]))
         ax.relim()
         ax.autoscale_view(True,True,True)
 
+    plt.show(block=False)
+    raw_input("Press ENTER...")
     ani = anim.FuncAnimation(fig, update, data_gen(ITERATIONS, STEP), interval=1)
     plt.show()
 
